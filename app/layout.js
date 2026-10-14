@@ -1,6 +1,5 @@
 import './globals.css';
 export const metadata={
- robots:{index:false,follow:false},
  icons:{
   icon:[
    {url:'/assets/favicon.png',sizes:'32x32',type:'image/png'},

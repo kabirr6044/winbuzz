@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {load} from 'cheerio';
+import {pageSeo} from '../lib/seo.mjs';
 const inventory=JSON.parse(await fs.readFile('reference/inventory.json','utf8'));const routes=new Set(inventory.pages.map(p=>p.route.replace(/\/$/,'')||'/'));const problems=[];let imageCount=0;
 for(const p of inventory.pages){const data=JSON.parse(await fs.readFile('reference/pages/'+(p.route==='/'?'home':p.route.slice(1).replaceAll('/','__'))+'.json','utf8'));const $=load(data.body);
  assert.equal($('script,iframe:not([src="/scores"])').length,0,p.route+' includes executable third-party content');
@@ -16,7 +17,7 @@ if(process.env.AUDIT_BASE_URL){
  for(const route of [...routes,'/scores']){
   const r=await fetch(process.env.AUDIT_BASE_URL+route);assert.equal(r.status,200,route);
   const $=load(await r.text());
-  const expectedTitle=route==='/scores'?'Live Cricket Score Widget - cwidget.crictimes.org':inventory.pages.find(p=>(p.route.replace(/\/$/,'')||'/')===route).title;
+  const expectedTitle=route==='/scores'?'Live Cricket Score Widget - cwidget.crictimes.org':pageSeo(route,inventory.pages.find(p=>(p.route.replace(/\/$/,'')||'/')===route)).title.absolute;
   assert.equal($('title').text(),expectedTitle,route+' browser title');
   assert.equal($('link[rel=icon][sizes="32x32"]').attr('href'),'/assets/favicon.png',route+' 32px favicon');
   assert.equal($('link[rel=icon][sizes="192x192"]').attr('href'),'/assets/favicon.png',route+' 192px favicon');
@@ -26,5 +27,5 @@ if(process.env.AUDIT_BASE_URL){
  const scores=await fetch(process.env.AUDIT_BASE_URL+'/api/scores');assert.equal(scores.status,200);const data=await scores.json();for(const tab of ['completed','live','upcoming'])assert.ok(Array.isArray(data[tab]),tab+' score data');assert.ok(data.completed.length>0,'Recent score cards must be populated');
  for(const method of ['GET','POST']){const r=await fetch(process.env.AUDIT_BASE_URL+'/out',{method,redirect:'manual'});assert.equal(r.status,303);assert.equal(r.headers.get('location'),process.env.EXTERNAL_REDIRECT_URL||'https://example.com/');}
  const missing=await fetch(process.env.AUDIT_BASE_URL+'/not-a-real-page');assert.equal(missing.status,404);
- console.log('PASS: all HTTP routes, original page titles and favicon, populated score API, GET/POST redirects and 404 response.');
+ console.log('PASS: all HTTP routes, SEO page titles and original favicon, populated score API, GET/POST redirects and 404 response.');
 }

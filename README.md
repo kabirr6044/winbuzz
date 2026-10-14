@@ -13,6 +13,18 @@ The Docker image uses Node.js 22, runs as the non-root `node` user, and includes
 
 For manual Web Service setup, choose **Docker**, set Dockerfile Path to `./Dockerfile`, Docker Context to `.`, and Health Check Path to `/api/health`. Leave Docker Command blank so Render uses the image's `CMD`. Set `EXTERNAL_REDIRECT_URL` in the service environment. For an existing native Node service, change its runtime to Docker or create a new Docker service from this repository.
 
+## Technical SEO
+
+Set `SITE_URL` in Render to your preferred HTTPS production origin (no path), for example `https://yourdomain.com`. It defaults to `https://winbuzz-dsym.onrender.com` until a custom domain is configured. Canonicals, `/sitemap.xml`, and `/robots.txt` use this value. Sitemap and robots routes resolve it at runtime, so a Docker image does not need rebuilding just to change this variable; restart/redeploy the service after changing it.
+
+The 105 content and blog-pagination routes use `index, follow` and self-referencing canonicals. All 164 tag archives plus the author/category archives remain `noindex, follow` and are excluded from the sitemap. The score widget, specification document, redirect endpoint and APIs carry noindex response headers. Robots.txt allows crawling so search engines can see noindex directives. Unknown routes return real 404 responses.
+
+All 271 captured pages have unique titles and descriptions; blog pagination has page-specific metadata. Metadata changes do not alter the captured HTML, visible headings, styles, images, favicon or navigation. Duplicate article content is still present: metadata fixes do not replace editorial consolidation or original content work. Titles for eight duplicate article routes are distinguished; no article routes are redirected.
+
+After deployment, inspect `/sitemap.xml` and `/robots.txt`, verify the chosen domain in Google Search Console, and submit the sitemap. Configure alternate hostnames with your host so the preferred custom domain is used consistently. Indexability does not guarantee ranking.
+
+To verify a running production build, set `AUDIT_BASE_URL` to its URL and run `node scripts/check-seo.mjs` (and set `SITE_URL` to the same configured canonical origin). The page-wise content plan and pre-change technical audit are retained in `docs/seo` as dated planning evidence, not current deployment results.
+
 To build and test the container locally:
 
 ```sh

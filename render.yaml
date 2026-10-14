@@ -17,3 +17,5 @@ services:
         value: "1"
       - key: EXTERNAL_REDIRECT_URL
         sync: false
+      - key: SITE_URL
+        value: https://winbuzz-dsym.onrender.com
