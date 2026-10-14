@@ -5,15 +5,24 @@ Next.js App Router replica of the public pages at officialwinbuzz.com, captured 
 ## Deploy on Render
 
 1. In Render, select **New > Blueprint** and connect `https://github.com/kabirr6044/winbuzz`.
-2. Select the `main` branch. Render reads `render.yaml` and creates the `winbuzz` Node.js web service in Singapore using the free plan.
+2. Select the `main` branch. Render reads `render.yaml` and creates the `winbuzz` Docker web service in Singapore using the free plan.
 3. Enter your chosen destination for `EXTERNAL_REDIRECT_URL` when prompted. Use a complete `https://` URL. This single variable controls every external link and form submission.
-4. Deploy. The Blueprint installs locked dependencies with `npm ci --include=dev`, builds Next.js, and starts it on `0.0.0.0` using Render's `PORT` environment variable. `/api/health` is the health check.
+4. Deploy. Render builds the root `Dockerfile`, which installs locked dependencies and creates a Next.js standalone production server. The container listens on `0.0.0.0` using Render's `PORT` environment variable, defaulting to 10000. `/api/health` is the health check.
 
-The Blueprint uses Node.js 22 and deploys new commits on `main` automatically. No database or persistent disk is required. Keep `reference/pages`, `reference/scores.json`, and `public` in the repository: they contain the page content, score fallback, favicon, fonts, and images used at runtime.
+The Docker image uses Node.js 22, runs as the non-root `node` user, and includes the captured page content, local images, fonts, favicon, score fallback, and Next.js static assets. The Blueprint deploys new commits on `main` automatically. No database or persistent disk is required.
 
-For manual Web Service setup, use the same build command `npm ci --include=dev && npm run build`, start command `npm start -- --hostname 0.0.0.0`, and health check `/api/health`. Set `NODE_VERSION=22`, `NODE_ENV=production`, and `EXTERNAL_REDIRECT_URL` in the service environment.
+For manual Web Service setup, choose **Docker**, set Dockerfile Path to `./Dockerfile`, Docker Context to `.`, and Health Check Path to `/api/health`. Leave Docker Command blank so Render uses the image's `CMD`. Set `EXTERNAL_REDIRECT_URL` in the service environment. For an existing native Node service, change its runtime to Docker or create a new Docker service from this repository.
 
-Render setup references: [Next.js deployment](https://render.com/docs/deploy-nextjs-app), [Blueprint configuration](https://render.com/docs/blueprint-spec), and [Node.js versions](https://render.com/docs/node-version).
+To build and test the container locally:
+
+```sh
+docker build -t winbuzz .
+docker run --rm -p 10000:10000 -e EXTERNAL_REDIRECT_URL=https://example.com winbuzz
+```
+
+Open http://localhost:10000. Redirect destinations are runtime variables; do not pass credentials or `.env` files into the image build. `.dockerignore` excludes local environment files, dependencies, build output, and QA files from the build context.
+
+Render setup references: [Docker deployment](https://render.com/docs/docker) and [Blueprint configuration](https://render.com/docs/blueprint-spec).
 
 ## Run
 

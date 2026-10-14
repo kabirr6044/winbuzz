@@ -1,18 +1,16 @@
 services:
   - type: web
     name: winbuzz
-    runtime: node
+    runtime: docker
     plan: free
     region: singapore
     repo: https://github.com/kabirr6044/winbuzz
     branch: main
-    buildCommand: npm ci --include=dev && npm run build
-    startCommand: npm start -- --hostname 0.0.0.0
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /api/health
     autoDeployTrigger: commit
     envVars:
-      - key: NODE_VERSION
-        value: "22"
       - key: NODE_ENV
         value: production
       - key: NEXT_TELEMETRY_DISABLED

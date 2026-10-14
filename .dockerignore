@@ -1,0 +1,15 @@
+.git
+.next
+node_modules
+.env*
+*.log
+docs
+scripts
+reference/*
+!reference/pages
+!reference/pages/**
+!reference/scores.json
+README.md
+AGENTS.md
+render.yaml
+tailwind.config.js
