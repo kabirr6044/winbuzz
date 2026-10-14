@@ -24,6 +24,7 @@ COPY --from=builder --chown=node:node /app/public ./public
 # Captured pages are read by filename at runtime and must be included explicitly.
 COPY --from=builder --chown=node:node /app/reference/pages ./reference/pages
 COPY --from=builder --chown=node:node /app/reference/scores.json ./reference/scores.json
+COPY --from=builder --chown=node:node /app/reference/inventory.json ./reference/inventory.json
 
 USER node
 EXPOSE 10000

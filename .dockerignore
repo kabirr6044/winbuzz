@@ -9,6 +9,7 @@ reference/*
 !reference/pages
 !reference/pages/**
 !reference/scores.json
+!reference/inventory.json
 README.md
 AGENTS.md
 render.yaml
