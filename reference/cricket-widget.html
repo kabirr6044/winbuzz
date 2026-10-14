@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://crictimes.org/" crossorigin>
+<link rel="dns-prefetch" href="https://fonts.gstatic.com/">
+<link rel="dns-prefetch" href="https://crictimes.org/">
+<title>Live Cricket Score Widget - cwidget.crictimes.org</title>
+<meta name="description" content="Live Cricket Widget. Embed this easy to use live cricket widget in your website. Live Cricket Score updates and scores from crictimes.org.">
+<meta content='IE=EmulateIE7' http-equiv='X-UA-Compatible'/>
+<meta content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0' name='viewport'/>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+<link href='https://cwidget.crictimes.org/favicon.ico' rel='icon' type='image/x-icon'/>
+<link href='https://crictimes.org/cricket-scores' rel='canonical'/>
+<meta content='https://widget.crictimes.org/' property='og:url'/>
+<meta content='Live Cricket Widget - IPL 2020, World Cup' property='og:title'/>
+<meta content='Live Cricket Widget. Embed this easy to use live cricket widget in your website. Live Cricket Score updates and scores from crictimes.org.' property='og:description'/>
+<meta property="og:image" content="https://crictimes.org/img/banner.jpg" />
+<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script type="text/javascript">
+function getP(name, def, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return def;
+    if (!results[2]) return def;
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+function loadCSS(e, t, n) {
+    "use strict";
+    function r() {
+        for (var t, i = 0; i < d.length; i++) d[i].href && d[i].href.indexOf(e) > -1 && (t = !0);
+        t ? o.media = n || "all" : setTimeout(r)
+    }
+    var o = window.document.createElement("link"),
+        i = t || window.document.getElementsByTagName("script")[0],
+        d = window.document.styleSheets;
+    return o.rel = "stylesheet", o.href = e, o.media = "only x", i.parentNode.insertBefore(o, i), r(), o
+}
+</script>
+<script type='text/javascript'>
+window.currentTab = 'completed';
+var appStyleColor = getP('a', '214252')
+
+var appBgColor = getP('b', 'fff')
+var appColor = getP('c', '444')
+
+var borderColor = getP('bo', '214252')
+
+var scoreBg = getP('sb', 'eee')
+
+var liveBg = getP('lb', 'af2d2d')
+var liveColor = getP('lc', 'fff')
+
+var darkBg = getP('db', '214252')
+var darkColor = getP('dc', 'fff')
+
+var tabColor = getP('tc', '222')
+var tabInvColor = getP('ti', 'fff')
+
+function score(data, type){
+	var html = "";
+	html += '<div class="main-body" style="border:5px solid #'+borderColor+';background:#'+appStyleColor+';color:#'+appColor+'">'
+	html += '<div class="content" style="background:#'+appBgColor+'">'
+	html += '<div class="content-tabs" style="background:#'+appStyleColor+'">'
+	html += '<ul class="tabs">'
+	html += '<li class="df-btn" id="completed">'
+	html += '<a class="wtab" data-href="completed">RECENT</a>'
+	html += '</li>'
+	html += '<li class="df-btn" id="live">'
+	html += '<a class="wtab" data-href="live">LIVE</a>'
+	html += '</li>'
+	html += '<li class="df-btn" id="upcoming">'
+	html += '<a class="wtab" data-href="upcoming">UPCOMING</a>'
+	html += '</li>'
+	html += '</ul>'
+	html += '</div>'
+	html += '<div class="active-layer" style="background:#'+appStyleColor+'"></div>'
+	html += '<div id="content">'
+	$.each(data, function( index, value ) {
+    	var liveUrl = "https://crictimes.org/score/"+value.url;
+		html += '<article class="seperate-v"><div class="home-sc-body">';
+		html += '<a style="background:#'+scoreBg+';color:#'+appColor+'" class="link-series" target="blank" rel="noopener" href="'+liveUrl+'">';
+		html += '<div class="status-bar"><span class="series_">'+value.spec+'<span>, '+value.series+'</span></span></div>'
+		html += '<h4 class="teams">';
+		html += '<div class="vs-team"><span class="team-vs">'+value.t_one+'</span><span class="vs_"> vs </span><span class="team-vs">'+value.t_two+'</span></div>';
+		html += '</h4>';	
+		if(value.status != 'UPCOMING'){
+			html += '<h4 class="sc-h2"><div class="vs-team">'
+			html += '<span class="team-vs team-score">'+value.t_one_s+'</span><span class="vs_"> &nbsp; </span><span class="team-vs team-score">'+value.t_two_s+'</span>';
+			html += '</div></h4>';	
+		} 
+		if(value.status != 'UPCOMING'){
+			html += '<div class="status-bar sc-time">'+value.m_status+'</div>';
+		} else {
+			html += '<div class="status-bar sc-time">'+value.dt+'</div>';
+		}
+		if(value.status == 'LIVE'){
+			html += '<div class="status-bar"><div class="live w3-button w3-red w3-round w3-tiny w3-hover-blue" style="background:#'+liveBg+'!important;color:#'+liveColor+'!important"><span class="btn live">LIVE</span></div></div>'
+		} else {
+			html += '<div class="status-bar"><div class="live w3-button w3-dark w3-round w3-tiny w3-hover-blue" style="background:#'+darkBg+'!important;color:#'+darkColor+'!important"><span class="btn live">DETAILS</span></div></div>'
+		}
+		html += '</a></div></article>'
+  	});
+  	html += '</div>'
+	html += '</div>'
+	html += '<div class="footer-links">'
+	html += '<a class="w3-button w3-dark w3-round w3-tiny w3-hover-blue" href="https://crictimes.org/index?utm_source=w&utm_medium=wf&utm_campaign=n_w_h" target="_blank" title="Crictimes">CRICTIMES</a>'
+	html += ' <a class="live w3-button w3-red w3-round w3-tiny w3-hover-blue" href="https://crictimes.org/live-cricket-score-widget?utm_source=w&utm_medium=wf&utm_campaign=n_w_w" target="_blank" title="Add this widget to your website">EMBED</a>'
+	html += '</div>'
+	html += '</div>'
+	$('#body-content').html(html);
+}
+function setActive(status){
+	$('#body-content').find('.df-btn').removeClass('active')
+	$('#body-content').find('#'+status).addClass('active')
+	$('#body-content').find('.tabs > li a').css("color", '#'+tabInvColor);
+	$('#body-content').find('.tabs > li').css("background-color", '#'+appStyleColor);
+	$('#body-content').find('.tabs > li.active a').css("color", '#'+tabColor);
+	$('#body-content').find('.tabs > li.active').css("background-color", '#'+appBgColor);
+	var css = '::-webkit-scrollbar-thumb,::-webkit-scrollbar-thumb:hover { background:#'+appStyleColor+'; }',
+	    head = document.head || document.getElementsByTagName('head')[0],
+	    style = document.createElement('style');
+	head.appendChild(style);
+	style.type = 'text/css';
+	style.appendChild(document.createTextNode(css));
+}
+function fetchScores(dStr){
+	$.ajax({url: "https://crictimes.org/data/v1/scores.json?q="+dStr, success: function(result){
+      if(result){
+		pS = window.currentTab;
+		if(pS){
+			score(result[pS], pS)
+			setActive(pS)
+		} else {
+			score(result['completed'], 'completed')
+			setActive('completed')
+		}
+  	  } 
+  	}});
+}
+function dtString(){
+	var t = new Date();
+	return t.getTime();
+}
+$(document).ready(function() {
+    fetchScores(dtString())
+	setInterval(function(){
+		fetchScores(dtString()) 
+	}, 30000);
+	$( "#body-content" ).on( "click", ".wtab", function() {
+		window.currentTab = $(this).attr('data-href');
+		fetchScores(dtString());
+	});
+});
+</script>
+<script>
+  loadCSS( "https://fonts.googleapis.com/css?family=Roboto:400|Lato:400%2C700" );
+</script>
+</head>
+<body>
+<div id="body-content">
+</div>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M7CERDFN6V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M7CERDFN6V', {
+	  'cookie_domain': 'cwidget.crictimes.org'
+  });
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"0de1d13588574b1a8ea5c9fba5fb71d8","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

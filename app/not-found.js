@@ -1,0 +1,1 @@
+export default function NotFound(){return <main style={{padding:'80px 24px',fontFamily:'sans-serif',color:'#f5f4ed',background:'#0d0f1a',minHeight:'100vh'}}><h1 style={{fontSize:36}}>Page not found</h1><p>The page you requested is unavailable.</p><a href="/" style={{color:'#e9bc3c'}}>Return to Home</a></main>}

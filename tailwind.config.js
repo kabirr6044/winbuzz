@@ -1,0 +1,1 @@
+module.exports={content:['./reference/pages/*.json'],corePlugins:{preflight:false},theme:{extend:{colors:{background:'var(--background)',foreground:'var(--foreground)',border:'var(--border)',input:'var(--input)',primary:'var(--primary)','muted-foreground':'var(--muted-foreground)'}}}};

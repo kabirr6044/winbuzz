@@ -1,0 +1,4 @@
+@font-face{font-family:Lato;font-style:normal;font-weight:400;src:url('/assets/widget-lato-400.ttf') format('truetype')}
+@font-face{font-family:Lato;font-style:normal;font-weight:700;src:url('/assets/widget-lato-700.ttf') format('truetype')}
+@font-face{font-family:Roboto;font-style:normal;font-weight:400;src:url('/assets/widget-roboto-400.ttf') format('truetype')}
+.wtab{border:0;background:transparent;padding:0;font:inherit;width:100%;cursor:pointer}::-webkit-scrollbar-thumb,::-webkit-scrollbar-thumb:hover{background:#214252}
