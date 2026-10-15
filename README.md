@@ -15,7 +15,7 @@ For manual Web Service setup, choose **Docker**, set Dockerfile Path to `./Docke
 
 ## Technical SEO
 
-Set `SITE_URL` in Render to your preferred HTTPS production origin (no path), for example `https://yourdomain.com`. It defaults to `https://winbuzz-dsym.onrender.com` until a custom domain is configured. Canonicals, `/sitemap.xml`, and `/robots.txt` use this value. Sitemap and robots routes resolve it at runtime, so a Docker image does not need rebuilding just to change this variable; restart/redeploy the service after changing it.
+The canonical origin is hardcoded as `https://winbuzz-dsym.onrender.com` in `lib/seo.mjs` until the final domain is supplied. Canonicals, `/sitemap.xml`, and the sitemap reference in `/robots.txt` all use that single value. Change it in code and redeploy when switching to the final domain; no domain environment variable is needed.
 
 The 105 content and blog-pagination routes use `index, follow` and self-referencing canonicals. All 164 tag archives plus the author/category archives remain `noindex, follow` and are excluded from the sitemap. The score widget, specification document, redirect endpoint and APIs carry noindex response headers. Robots.txt allows crawling so search engines can see noindex directives. Unknown routes return real 404 responses.
 
@@ -23,7 +23,13 @@ All 271 captured pages have unique titles and descriptions; blog pagination has 
 
 After deployment, inspect `/sitemap.xml` and `/robots.txt`, verify the chosen domain in Google Search Console, and submit the sitemap. Configure alternate hostnames with your host so the preferred custom domain is used consistently. Indexability does not guarantee ranking.
 
-To verify a running production build, set `AUDIT_BASE_URL` to its URL and run `node scripts/check-seo.mjs` (and set `SITE_URL` to the same configured canonical origin). The page-wise content plan and pre-change technical audit are retained in `docs/seo` as dated planning evidence, not current deployment results.
+To verify a running production build, set `AUDIT_BASE_URL` to its URL and run `node scripts/check-seo.mjs`. The page-wise content plan and pre-change technical audit are retained in `docs/seo` as dated planning evidence, not current deployment results.
+
+## Deploy on Vercel
+
+Import `kabirr6044/winbuzz` from GitHub with framework preset **Next.js**, repository root as the root directory, Node.js **22.x**, build command `npm run build`, and the default output directory. No custom start command, port setting or `vercel.json` is required. Set only `EXTERNAL_REDIRECT_URL` to the intended complete destination URL. Apply environment-variable changes with a new deployment.
+
+Vercel uses native Next.js output; Docker deployments retain standalone output. Explicit file tracing includes the captured JSON pages in the catch-all server function, so article routes can read their local content on Vercel. SSR, API routes, redirect behaviour, local assets and SEO metadata remain the same. Canonicals and sitemap URLs deliberately continue pointing to the current Render origin until it is changed in `lib/seo.mjs` after the final domain is supplied.
 
 To build and test the container locally:
 

@@ -1,6 +1,6 @@
 import {pages, isIndexable, siteUrl} from '../lib/seo.mjs';
 
-// Resolve the production origin at runtime, including Docker deployments.
+// Canonicals and sitemap URLs share the origin defined in lib/seo.mjs.
 export const dynamic = 'force-dynamic';
 
 export default function sitemap() {

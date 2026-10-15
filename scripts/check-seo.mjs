@@ -56,4 +56,4 @@ const bot = await fetch(base + '/login', {headers:{'user-agent':'Googlebot'}});
 const botDom = load(await bot.text());
 assert.equal(botDom('head link[rel="canonical"]').attr('href'), `${siteUrl()}/login`);
 assert.equal(botDom('head meta[name="robots"]').attr('content'), 'index, follow');
-console.log(`PASS: ${checked} server-rendered routes, unique metadata, unchanged H1s, ${urls.length} sitemap URLs, canonicals, robots.txt, utility exclusions, Googlebot head metadata and 404s. SITE_URL=${siteUrl()}`);
+console.log(`PASS: ${checked} server-rendered routes, unique metadata, unchanged H1s, ${urls.length} sitemap URLs, canonicals, robots.txt, utility exclusions, Googlebot head metadata and 404s. Canonical origin=${siteUrl()}`);

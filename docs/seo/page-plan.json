@@ -24,7 +24,7 @@
       "Public sitemap missing",
       "Confirmed: no app/public sitemap route",
       "reference/sitemap.xml is a capture of the source site, not a served sitemap for our host.",
-      "Add app/sitemap.js based on approved, canonical, indexable routes. Use SITE_URL set to the chosen production domain; omit noindex archives, redirects, /out, /scores, APIs and specification.html. Use genuine modification dates, not the current deploy time for all pages.",
+      "Add app/sitemap.js based on approved, canonical, indexable routes. Use the canonical origin defined in lib/seo.mjs for the chosen production domain; omit noindex archives, redirects, /out, /scores, APIs and specification.html. Use genuine modification dates, not the current deploy time for all pages.",
       "GET /sitemap.xml must return 200 XML with only our production hostname; validate URL status, canonical and robots alignment; submit in Search Console."
     ],
     [
@@ -40,7 +40,7 @@
       "Canonical host and URLs absent",
       "Confirmed: generateMetadata returns only title and description",
       "No metadataBase or alternates.canonical configured; custom domain remains unknown.",
-      "Set SITE_URL to the preferred HTTPS custom domain. Emit a self-canonical for each retained page, including distinct pagination. Configure alternate www and Render hostname redirects or indexing controls appropriately. Never point canonicals to officialwinbuzz.com for content intended to rank independently.",
+      "Set the canonical origin in lib/seo.mjs to the preferred HTTPS custom domain. Emit a self-canonical for each retained page, including distinct pagination. Configure alternate www and Render hostname redirects or indexing controls appropriately. Never point canonicals to officialwinbuzz.com for content intended to rank independently.",
       "Inspect canonical in returned head; ensure it is a 200 indexable URL on the chosen host; check HTTP/www/Render aliases separately."
     ],
     [
